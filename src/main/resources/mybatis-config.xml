@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration 
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<settings>
+		<!-- changes from the defaults for testing -->
+		<setting name="cacheEnabled" value="false" />
+		<setting name="useGeneratedKeys" value="true" />
+		<setting name="defaultExecutorType" value="REUSE" />
+	</settings>
+	<!-- 起别名，此时的User等同于完整的路径 -->
+	<!-- <typeAliases> -->
+	<!-- <typeAlias alias="Task" type="cn.vrv.opinion.crawler.manage.domain.TaskDomain" 
+		/> -->
+	<!-- </typeAliases> -->
+	<!-- <plugins> <plugin interceptor="com.wporoad.app.util.PageHelper"> <property 
+		name="dialect" value="mysql" /> </plugin> </plugins> -->
+	<!-- 配置环境 -->
+	<!-- <environments default="development"> 尽管可以配置多个环境，但是每个 SqlSessionFactory 
+		实例只能选择其一 <environment id="development"> 事务管理器的配置 (JDBC|MANAGED) JDBC:这个配置就是直接使用了 
+		JDBC 的提交和回滚设置，它依赖于从数据源得到的连接来管理事务范围。 注意：如果使用 Spring + MyBatis，则没有必要配置事务管理器，因为 
+		Spring 模块会使用自带的管理器来覆盖前面的配置。 <transactionManager type="JDBC" /> 数据源 (UNPOOLED|POOLED|JNDI) 
+		<dataSource type="POOLED"> <property name="driver" value="${jdbc.driverClassName}" 
+		/> <property name="url" value="${jdbc.url}" /> <property name="username" 
+		value="${jdbc.username}" /> <property name="password" value="${jdbc.password}" 
+		/> <property name="poolMaximumIdleConnections" value=""/> </dataSource> </environment> 
+		</environments> -->
+</configuration>

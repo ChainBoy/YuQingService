@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context 
+    http://www.springframework.org/schema/context/spring-context-3.0.xsd
+    http://cxf.apache.org/jaxrs 
+    http://cxf.apache.org/schemas/jaxrs.xsd
+    http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+    http://www.springframework.org/schema/mvc
+    http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
+	<!-- 自动扫描注入service -->
+	<context:component-scan base-package="com.vrv.nj.demo.*" />
+	<context:component-scan base-package="com.vrv.nj.category.*" />
+	<context:component-scan base-package="com.vrv.nj.log.*" />
+	<context:component-scan base-package="com.vrv.nj.info.*" />
+	<context:component-scan base-package="com.vrv.nj.mail.*" />
+	<context:component-scan base-package="com.vrv.nj.module.*" />
+	<context:component-scan base-package="com.vrv.nj.topic.*" />
+	<context:component-scan base-package="com.vrv.nj.user.*.*" />
+	<context:component-scan base-package="com.vrv.nj.company.*" />
+	<context:component-scan base-package="com.vrv.nj.blacklist.*" />
+	<!-- 接口服务 -->
+	<jaxrs:server id="restServiceContainer" address="/yq">
+		<jaxrs:providers>
+			<ref bean="jacksonProvider" />
+		</jaxrs:providers>
+		<jaxrs:extensionMappings>
+			<entry key="json" value="application/json" />
+			<entry key="xml" value="application/xml" />
+		</jaxrs:extensionMappings>
+		<!-- jaxrs管理的service bean -->
+		<jaxrs:serviceBeans>
+			<!-- demo -->
+			<ref bean="demoService" />
+			<!-- 登录服务 -->
+			<ref bean="loginService" />
+			<!-- 注册接口 -->
+			<ref bean="registerService" />
+			<!-- 信息查询接口 -->
+			<ref bean="showInfoService" />
+			<!-- 有关企业信息接口 -->
+			<ref bean="companyService" />
+			<!-- 模块信息接口 -->
+			<ref bean="monitorModuleService" />
+		</jaxrs:serviceBeans>
+
+		<!-- 消息拦截器 -->
+		<jaxrs:inInterceptors>
+			<bean class="org.apache.cxf.interceptor.LoggingInInterceptor"></bean>
+		</jaxrs:inInterceptors>
+		<jaxrs:outInterceptors>
+			<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"></bean>
+		</jaxrs:outInterceptors>
+	</jaxrs:server>
+	<!-- 数据格式 -->
+	<bean id="jacksonObjectMapper"
+		class="org.springframework.http.converter.json.Jackson2ObjectMapperFactoryBean"></bean>
+	<bean id="jacksonProvider"
+		class="com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider">
+		<property name="mapper" ref="jacksonObjectMapper" />
+	</bean>
+
+	<!-- =============================数据库配置======================================== -->
+	<!-- 数据源 -->
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName">
+			<value>com.mysql.jdbc.Driver</value>
+		</property>
+		<property name="url">
+			<value>jdbc:mysql://180.97.15.174:3306/cache_data?useUnicode=true&amp;characterEncoding=UTF-8
+			</value>
+			<!-- <value>jdbc:mysql://192.168.3.17:3306/cache_data?useUnicode=true&amp;characterEncoding=UTF-8 
+				</value> -->
+		</property>
+		<property name="username">
+			<value>zy</value>
+		</property>
+		<property name="password">
+			<value>wzh234287</value>
+		</property>
+		<property name="connectionProperties">
+			<props>
+				<prop key="initialSize">40</prop>
+				<prop key="maxTotal">200</prop>
+				<prop key="maxIdle">20</prop>
+				<prop key="minIdle">10</prop>
+				<prop key="maxWaitMillis">10000</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- 配置mybatisSqlSessionFactoryBean -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="configLocation" value="classpath:mybatis-config.xml" />
+		<property name="mapperLocations" value="classpath*:mybatis-mapper/*Mapper.xml" />
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<!-- 配置SqlSessionTemplate -->
+	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<!-- 配置mybatis mapper接口 自动扫描 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.vrv.nj.mapper" />
+		<property name="sqlSessionTemplateBeanName" value="sqlSessionTemplate" />
+	</bean>
+
+	<!-- 事务管理器 -->
+	<bean id="txManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<tx:annotation-driven transaction-manager="txManager" />
+	<!-- ====================================END============================================== -->
+</beans>

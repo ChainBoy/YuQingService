@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vrv.nj.mapper.DataBeanMapper">
+
+	<resultMap id="BaseResultMap" type="com.vrv.nj.domain.mysql.DataBean">
+		<result column="id" property="id" jdbcType="VARCHAR" />
+		<result column="organizationCode" property="organizationCode"
+			jdbcType="VARCHAR" />
+		<result column="title" property="title" jdbcType="CLOB" />
+		<result column="content" property="content" jdbcType="CLOB" />
+		<result column="url" property="url" jdbcType="VARCHAR" />
+		<result column="poTime" property="poTime" jdbcType="BIGINT" />
+		<result column="author" property="author" jdbcType="VARCHAR" />
+		<result column="domain" property="domain" jdbcType="VARCHAR" />
+		<result column="source" property="source" jdbcType="VARCHAR" />
+		<result column="addTime" property="addTime" jdbcType="BIGINT" />
+		<result column="pr" property="pr" jdbcType="INTEGER" />
+		<result column="webSiteType" property="webSiteType" jdbcType="INTEGER" />
+		<result column="webSite" property="webSite" jdbcType="VARCHAR" />
+		<result column="positiveOrNegative" property="positiveOrNegative"
+			jdbcType="INTEGER" />
+		<result column="abroad" property="abroad" jdbcType="INTEGER" />
+		<result column="spreadValue" property="spreadValue" jdbcType="INTEGER" />
+		<result column="replay" property="replay" jdbcType="INTEGER" />
+		<result column="t_view" property="view" jdbcType="INTEGER" />
+		<result column="transer" property="transer" jdbcType="INTEGER" />
+		<result column="praiseCount" property="praiseCount" jdbcType="INTEGER" />
+		<result column="importanceDegree" property="importanceDegree"
+			jdbcType="INTEGER" />
+		<result column="opinionValue" property="opinionValue" jdbcType="INTEGER" />
+		<result column="sensitiveValue" property="sensitiveValue"
+			jdbcType="INTEGER" />
+		<result column="administrativeId" property="administrativeId"
+			jdbcType="VARCHAR" />
+		<result column="titlePrint" property="titlePrint" jdbcType="VARCHAR" />
+		<result column="titleContentPrint" property="titleContentPrint"
+			jdbcType="VARCHAR" />
+		<result column="subpoTime" property="subpoTime" jdbcType="BIGINT" />
+		<result column="subpraiseCount" property="subpraiseCount"
+			jdbcType="INTEGER" />
+		<result column="subreplay" property="subreplay" jdbcType="INTEGER" />
+		<result column="subtranser" property="subtranser" jdbcType="INTEGER" />
+		<result column="version" property="version" jdbcType="VARCHAR" />
+		<result column="t_read" property="read" jdbcType="VARCHAR" />
+		<result column="doc_count" property="doc_count" jdbcType="INTEGER" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,
+		organizationCode,
+		title,
+		content,
+		url,
+		poTime,
+		author,
+		domain,
+		source,
+		addTime,
+		pr,
+		webSiteType,
+		webSite,
+		positiveOrNegative,
+		abroad,
+		spreadValue,
+		replay,
+		t_view,
+		transer,
+		praiseCount,
+		importanceDegree,
+		opinionValue,
+		sensitiveValue,
+		administrativeId,
+		titlePrint,
+		titleContentPrint,
+		subpoTime,
+		subpraiseCount,
+		subreplay,
+		subtranser,
+		version,
+		t_read,
+		doc_count
+	</sql>
+
+	<!-- 根据单位码查询改单位的所有帖子 -->
+	<select id="findByOrganizationCode" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM
+		t_databean
+		WHERE
+		organizationCode = #{organizationCode,jdbcType=VARCHAR}
+		ORDER BY
+		poTime DESC
+	</select>
+
+	<!-- 根据单位编码和id查询帖子 -->
+	<select id="findByOrganizationAndId" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM
+		t_databean
+		WHERE
+		organizationCode = #{organizationCode,jdbcType=VARCHAR}
+		AND
+		id = #{id,jdbcType=VARCHAR}
+	</select>
+
+	<!-- 根据时间删除帖子 -->
+	<delete id="deleteByLongTime" parameterType="java.lang.Long">
+		DELETE FROM
+		t_databean
+		WHERE
+		poTime &lt;#{poTime,jdbcType=BIGINT}
+	</delete>
+
+	<!-- 删除帖子 -->
+	<delete id="deleteByOrganizationCodeAndId" parameterType="java.lang.String">
+		DELETE
+		FROM
+		t_databean
+		WHERE
+		organizationCode = #{organizationCode,jdbcType=VARCHAR}
+		AND
+		id = #{id,jdbcType=VARCHAR}
+	</delete>
+
+	<!-- 单条数据入库 -->
+	<insert id="insertOne" parameterType="com.vrv.nj.domain.mysql.DataBean">
+		INSERT INTO
+		t_databean
+		(id,organizationCode,title,content,url,poTime,author,domain,source,addTime,pr,webSiteType,webSite,
+		positiveOrNegative,abroad,spreadValue,replay,t_view,transer,praiseCount,
+		importanceDegree,opinionValue,sensitiveValue,administrativeId,titlePrint,
+		titleContentPrint,subpoTime,subpraiseCount,subreplay,subtranser,version,t_read)
+		values
+		(
+		#{id,jdbcType=VARCHAR},
+		#{organizationCode,jdbcType=VARCHAR},
+		#{title,jdbcType=CLOB},
+		#{content,jdbcType=CLOB},
+		#{url,jdbcType=VARCHAR},
+		#{poTime,jdbcType=BIGINT},
+		#{author,jdbcType=VARCHAR},
+		#{domain,jdbcType=VARCHAR},
+		#{source,jdbcType=VARCHAR},
+		#{addTime,jdbcType=BIGINT},
+		#{pr,jdbcType=INTEGER},
+		#{webSiteType,jdbcType=INTEGER},
+		#{webSite,jdbcType=VARCHAR},
+		#{positiveOrNegative,jdbcType=INTEGER},
+		#{abroad,jdbcType=INTEGER},
+		#{spreadValue,jdbcType=INTEGER},
+		#{replay,jdbcType=INTEGER},
+		#{view,jdbcType=INTEGER},
+		#{transer,jdbcType=INTEGER},
+		#{praiseCount,jdbcType=INTEGER},
+		#{importanceDegree,jdbcType=INTEGER},
+		#{opinionValue,jdbcType=INTEGER},
+		#{sensitiveValue,jdbcType=INTEGER},
+		#{administrativeId,jdbcType=VARCHAR},
+		#{titlePrint,jdbcType=VARCHAR},
+		#{titleContentPrint,jdbcType=VARCHAR},
+		#{subpoTime,jdbcType=BIGINT},
+		#{subpraiseCount,jdbcType=INTEGER},
+		#{subreplay,jdbcType=INTEGER},
+		#{subtranser,jdbcType=INTEGER},
+		#{version,jdbcType=VARCHAR},
+		#{read,jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<!-- 标记已读 -->
+	<update id="updateByOrgCdeAndId" parameterType="java.lang.String">
+		UPDATE
+		t_databean
+		SET
+		t_read = '1'
+		WHERE
+		organizationCode = #{organizationCode,jdbcType=VARCHAR}
+		AND
+		id = #{id,jdbcType=VARCHAR}
+	</update>
+
+	<!-- 根据条件查询 计数 -->
+	<select id="selectByMapCount" resultType="java.lang.Integer"
+		parameterType="java.util.Map">
+		SELECT
+		count(1)
+		FROM
+		t_databean
+		WHERE
+		1=1
+		<if test="organizationCode != null and organizationCode != ''">
+			AND organizationCode =
+			#{organizationCode,jdbcType=VARCHAR}
+		</if>
+		<if test="positiveOrNegative != null">
+			AND positiveOrNegative =
+			#{positiveOrNegative,jdbcType=INTEGER}
+		</if>
+		<if test="read != null and read != ''">
+			AND t_read = #{read,jdbcType=VARCHAR}
+		</if>
+		<if test="webSiteType != null">
+			AND webSiteType = #{webSiteType,jdbcType=INTEGER}
+		</if>
+		<if test="startPoTime != null and startPoTime != ''">
+		<![CDATA[ AND poTime >= #{startPoTime,jdbcType=BIGINT}]]>
+		</if>
+		<if test="endPoTime != null and endPoTime != ''">
+		<![CDATA[ AND poTime <= #{endPoTime,jdbcType=BIGINT}]]>
+		</if>
+		<if test="domains!=null and domains!=''">
+			AND domain NOT IN
+			<foreach collection="domains" open="(" close=")" separator=","
+				item="item">
+				#{item}
+			</foreach>
+		</if>
+		<if test="sort != null and sort != ''">
+			<if test="sort== 'desc'">
+				ORDER BY poTime DESC
+			</if>
+			<if test="sort== 'asc'">
+				ORDER BY poTime ASC
+			</if>
+		</if>
+	</select>
+
+	<!-- 根据条件查询结果 -->
+	<select id="selectByMap" parameterType="java.util.Map"
+		resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM
+		t_databean
+		WHERE
+		1=1
+		<if test="organizationCode != null and organizationCode != ''">
+			AND organizationCode =
+			#{organizationCode,jdbcType=VARCHAR}
+		</if>
+		<if test="positiveOrNegative != null">
+			AND positiveOrNegative =
+			#{positiveOrNegative,jdbcType=INTEGER}
+		</if>
+		<if test="read != null and read != ''">
+			AND t_read = #{read,jdbcType=VARCHAR}
+		</if>
+		<if test="webSiteType != null">
+			AND webSiteType = #{webSiteType,jdbcType=INTEGER}
+		</if>
+		<if test="startPoTime != null and startPoTime != ''">
+		<![CDATA[ AND poTime >= #{startPoTime,jdbcType=BIGINT}]]>
+		</if>
+		<if test="endPoTime != null and endPoTime != ''">
+		<![CDATA[ AND poTime <= #{endPoTime,jdbcType=BIGINT}]]>
+		</if>
+		<if test="domains!=null and domains!=''">
+			AND domain NOT IN
+			<foreach collection="domains" open="(" close=")" separator=","
+				item="item">
+				#{item}
+			</foreach>
+		</if>
+		<if test="sort != null and sort != ''">
+			<if test="sort== 'desc'">
+				ORDER BY poTime DESC
+			</if>
+			<if test="sort== 'asc'">
+				ORDER BY poTime ASC
+			</if>
+		</if>
+		<if test="start != null">
+			LIMIT #{start,jdbcType=INTEGER}
+			<if test="limit != null">
+				,#{limit,jdbcType=INTEGER}
+			</if>
+		</if>
+	</select>
+
+	<!-- 批量删除 -->
+	<delete id="batchDeleteInfo" parameterType="java.util.Map">
+		DELETE FROM
+		t_databean
+		WHERE
+		organizationCode=#{organizationCode,jdbcType=VARCHAR}
+		AND id IN
+		<foreach collection="ids" open="(" close=")" separator=","
+			item="item">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- 批量更新 -->
+	<update id="batchUpdateInfo" parameterType="java.util.Map">
+		UPDATE
+		t_databean
+		SET
+		t_read = '1'
+		WHERE organizationCode=#{organizationCode,jdbcType=VARCHAR}
+		AND
+		id IN
+		<foreach collection="ids" open="(" close=")" separator=","
+			item="item">
+			#{item}
+		</foreach>
+	</update>
+
+	<!-- 统计 -->
+	<select id="selectGroupByWebSiteType" resultType="com.vrv.nj.domain.mysql.WebSiteTypeCnt"
+		parameterType="java.util.Map">
+		SELECT
+		webSiteType,count(1) as cnt
+		FROM
+		t_databean
+		WHERE
+		1=1
+		<if test="organizationCode != null and organizationCode != ''">
+			AND organizationCode =
+			#{organizationCode,jdbcType=VARCHAR}
+		</if>
+		<if test="startPoTime != null and startPoTime != ''">
+		<![CDATA[ AND poTime >= #{startPoTime,jdbcType=BIGINT}]]>
+		</if>
+		<if test="endPoTime != null and endPoTime != ''">
+		<![CDATA[ AND poTime <= #{endPoTime,jdbcType=BIGINT}]]>
+		</if>
+		<if test="domains!=null and domains!=''">
+			AND domain NOT IN
+			<foreach collection="domains" open="(" close=")" separator=","
+				item="item">
+				#{item}
+			</foreach>
+		</if>
+		GROUP BY
+		webSiteType
+	</select>
+</mapper>

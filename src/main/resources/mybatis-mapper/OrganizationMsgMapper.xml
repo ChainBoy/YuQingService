@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vrv.nj.mapper.OrganizationMsgMapper">
+	<resultMap id="BaseResultMap" type="com.vrv.nj.domain.mysql.OrganizationMsg">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="organizationCode" property="organizationcode"
+			jdbcType="VARCHAR" />
+		<result column="organizationName" property="organizationname"
+			jdbcType="VARCHAR" />
+		<result column="updateTime" property="updatetime" jdbcType="TIMESTAMP" />
+		<result column="lastQueryTime" property="lastQueryTime"
+			jdbcType="TIMESTAMP" />
+		<result column="subcategory" property="subcategory" jdbcType="VARCHAR" />
+		<result column="version" property="version" jdbcType="VARCHAR" />
+		<result column="search_version" property="search_version"
+			jdbcType="VARCHAR" />
+		<result column="source" property="source" jdbcType="VARCHAR" />
+		<result column="pretreatment" property="pretreatment" jdbcType="INTEGER" />
+		<result column="queue_status" property="queue_status" jdbcType="INTEGER" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,
+		organizationCode,
+		organizationName,
+		updateTime,
+		lastQueryTime,
+		subcategory,
+		version,
+		search_version,
+		source,
+		pretreatment,
+		queue_status
+	</sql>
+
+	<!-- 根据主键查询 -->
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from organizationMsg
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+
+	<!-- 根据单位编码查询 -->
+	<select id="findByOrganizationCode" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from organizationMsg
+		where organizationCode =
+		#{organizationcode,jdbcType=VARCHAR}
+	</select>
+
+	<!-- 查询全部单位信息 -->
+	<select id="findAll" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from organizationMsg
+	</select>
+
+	<!-- 查询只加入慢加载的单位 -->
+	<select id="findAccordOrgs" resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM organizationMsg
+		WHERE pretreatment = 1
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		organizationMsg
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+
+	<!-- 增 -->
+	<insert id="insertOne" parameterType="com.vrv.nj.domain.mysql.OrganizationMsg">
+		insert into organizationMsg
+		(organizationCode, organizationName,
+		updateTime, lastQueryTime,
+		subcategory,version,search_version,source,pretreatment,queue_status)
+		values
+		(#{organizationcode,jdbcType=VARCHAR},
+		#{organizationname,jdbcType=VARCHAR},
+		#{updatetime,jdbcType=TIMESTAMP}, #{lastQueryTime,jdbcType=TIMESTAMP},
+		#{subcategory,jdbcType=VARCHAR},
+		#{version,jdbcType=VARCHAR},
+		#{search_version,jdbcType=VARCHAR},
+		#{source,jdbcType=VARCHAR},
+		#{pretreatment,jdbcType=INTEGER},
+		#{queue_status,jdbcType=INTEGER}
+		)
+	</insert>
+
+	<!-- 条件增 -->
+	<insert id="insertSelective" parameterType="com.vrv.nj.domain.mysql.OrganizationMsg">
+		insert into organizationMsg
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="organizationcode != null">
+				organizationCode,
+			</if>
+			<if test="organizationname != null">
+				organizationName,
+			</if>
+			<if test="updatetime != null">
+				updateTime,
+			</if>
+			<if test="lastQueryTime != null">
+				lastQueryTime,
+			</if>
+			<if test="subcategory != null">
+				subcategory,
+			</if>
+			<if test="version != null">
+				version,
+			</if>
+			<if test="search_version != null">
+				search_version,
+			</if>
+			<if test="source != null">
+				source,
+			</if>
+			<if test="pretreatment != null">
+				pretreatment,
+			</if>
+			<if test="queue_status != null">
+				queue_status,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="organizationcode != null">
+				#{organizationcode,jdbcType=VARCHAR},
+			</if>
+			<if test="organizationname != null">
+				#{organizationname,jdbcType=VARCHAR},
+			</if>
+			<if test="updatetime != null">
+				#{updatetime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="lastQueryTime != null">
+				#{lastQueryTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="subcategory != null">
+				#{subcategory,jdbcType=VARCHAR},
+			</if>
+			<if test="version != null">
+				#{version,jdbcType=VARCHAR},
+			</if>
+			<if test="search_version != null">
+				#{search_version,jdbcType=VARCHAR},
+			</if>
+			<if test="source != null">
+				#{source,jdbcType=VARCHAR},
+			</if>
+			<if test="pretreatment != null">
+				#{pretreatment,jdbcType=INTEGER},
+			</if>
+			<if test="queue_status != null">
+				#{queue_status,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+
+	<!-- 主键更新 -->
+	<update id="updateByPrimaryKeySelective" parameterType="com.vrv.nj.domain.mysql.OrganizationMsg">
+		update organizationMsg
+		<set>
+			<if test="organizationcode != null">
+				organizationCode = #{organizationcode,jdbcType=VARCHAR},
+			</if>
+			<if test="organizationname != null">
+				organizationName = #{organizationname,jdbcType=VARCHAR},
+			</if>
+			<if test="updatetime != null">
+				updateTime = #{updatetime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="lastQueryTime != null">
+				lastQueryTime = #{lastQueryTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="subcategory != null">
+				subcategory = #{subcategory,jdbcType=VARCHAR},
+			</if>
+			<if test="version != null">
+				version = #{version,jdbcType=VARCHAR},
+			</if>
+			<if test="search_version != null">
+				search_version = #{search_version,jdbcType=VARCHAR},
+			</if>
+			<if test="source != null">
+				source = #{source,jdbcType=VARCHAR},
+			</if>
+			<if test="pretreatment != null">
+				#{pretreatment,jdbcType=INTEGER},
+			</if>
+			<if test="queue_status != null">
+				#{queue_status,jdbcType=INTEGER}
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+
+	<!-- 主键更新 -->
+	<update id="updateByPrimaryKey" parameterType="com.vrv.nj.domain.mysql.OrganizationMsg">
+		update
+		organizationMsg
+		set organizationCode =
+		#{organizationcode,jdbcType=VARCHAR},
+		organizationName =
+		#{organizationname,jdbcType=VARCHAR},
+		updateTime =
+		#{updatetime,jdbcType=TIMESTAMP},
+		lastQueryTime =
+		#{lastQueryTime,jdbcType=TIMESTAMP},
+		subcategory =
+		#{subcategory,jdbcType=VARCHAR},
+		version = #{version,jdbcType=VARCHAR},
+		search_version = #{search_version,jdbcType=VARCHAR},
+		source =
+		#{source,jdbcType=VARCHAR},
+		pretreatment =
+		#{pretreatment,jdbcType=INTEGER},
+		queue_status =
+		#{queue_status,jdbcType=INTEGER}
+		where id =
+		#{id,jdbcType=INTEGER}
+	</update>
+	
+	<delete id="deleteByOrgCode">
+		DELETE 
+		FROM 
+		organizationMsg
+		WHERE 1=1
+		<if test="organizationCode != null and organizationCode !='' ">
+			AND organizationCode =#{organizationCode,jdbcType=VARCHAR}
+		</if>
+	</delete>
+</mapper>

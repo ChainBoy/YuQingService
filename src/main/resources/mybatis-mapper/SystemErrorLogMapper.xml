@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vrv.nj.mapper.SystemErrorLogMapper">
+	<resultMap id="BaseResultMap" type="com.vrv.nj.domain.mysql.SystemErrorLog">
+		<result column="log_id" property="logId" jdbcType="VARCHAR" />
+		<result column="system_id" property="systemId" jdbcType="VARCHAR" />
+		<result column="system_name" property="systemName" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="operator" property="operator" jdbcType="VARCHAR" />
+		<result column="error_msg" property="errorMsg" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		log_id,
+		system_id,
+		system_name,
+		create_time,
+		operator,
+		error_msg,
+		status
+	</sql>
+
+	<select id="selectByStatus" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM
+		t_system_error_log
+		WHERE
+		status =#{status,jdbcType=INTEGER}
+		ORDER BY
+		create_time DESC
+	</select>
+
+	<insert id="insertOne">
+		INSERT INTO
+		t_system_error_log
+		(
+		log_id,
+		system_id,
+		system_name,
+		operator,
+		create_time,
+		error_msg,
+		status
+		)
+		VALUES
+		(
+		#{logId,jdbcType=VARCHAR},
+		#{systemId,jdbcType=VARCHAR},
+		#{systemName,jdbcType=VARCHAR},
+		#{operator,jdbcType=VARCHAR},
+		#{createTime,jdbcType=TIMESTAMP},
+		#{errorMsg,jdbcType=VARCHAR},
+		#{status,jdbcType=INTEGER}
+		)
+	</insert>
+
+	<update id="updateOne" parameterType="com.vrv.nj.domain.mysql.SystemErrorLog">
+		UPDATE
+		t_system_error_log
+		<set>
+			<trim suffixOverrides=",">
+				<if test="systemId != null and systemId !=''">
+					system_id = #{systemId,jdbcType=VARCHAR},
+				</if>
+				<if test="systemName != null and systemName !=''">
+					system_name = #{systemName,jdbcType=VARCHAR},
+				</if>
+				<if test="operator != null and operator !=''">
+					operator = #{operator,jdbcType=VARCHAR},
+				</if>
+				<if test="createTime != null">
+					create_time = #{createTime,jdbcType=TIMESTAMP},
+				</if>
+				<if test="operator != null and operator !=''">
+					operator = #{operator,jdbcType=VARCHAR},
+				</if>
+				<if test="errorMsg != null and errorMsg !=''">
+					error_msg = #{errorMsg,jdbcType=VARCHAR},
+				</if>
+				<if test="status != null">
+					status = #{status,jdbcType=INTEGER},
+				</if>
+			</trim>
+		</set>
+		WHERE log_id=#{logId,jdbcType=VARCHAR}
+	</update>
+
+	<delete id="deleteBefore7DaysLog" parameterType="java.util.Date">
+		DELETE FROM
+		t_system_error_log
+		WHERE
+		create_time &lt; #{createTime,jdbcType=DATE}
+	</delete>
+</mapper>

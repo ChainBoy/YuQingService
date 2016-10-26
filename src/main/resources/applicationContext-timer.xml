@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans   
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd  
+    http://www.springframework.org/schema/task   
+    http://www.springframework.org/schema/task/spring-task-3.0.xsd">
+    
+	<task:annotation-driven />
+	<!-- 定时器开关 -->
+	<!-- 定时器 这个是定时器要调用方法的类 -->
+	<bean id="summaryTask" class="com.vrv.nj.job.OrganizationSummaryJob" />
+	<bean id="deleteDataTask" class="com.vrv.nj.job.DeleteBeforeTodayDataJob" />
+	<bean id="sendEmailJob" class="com.vrv.nj.job.SendError2UserJob" />
+	<!-- <bean id="syncBlackListJob" class="com.vrv.nj.job.SyncBlackListJob" 
+		/> -->
+	<!-- 定义调用对象和调用对象的方法 -->
+	<task:scheduled-tasks>
+		<!--0 */5 * * * ? 每5分钟触发 -->
+		<task:scheduled ref="summaryTask" method="execute"
+			cron="0 */5 * * * ?" />
+		<!-- 每天23点55分定时删除数据 -->
+		<task:scheduled ref="deleteDataTask" method="execute"
+			cron="0 55 23 * * ?" />
+		<!-- 每天9点执行 -->
+		<task:scheduled ref="sendEmailJob" method="execute"
+			cron="0 0 9 * * ?" />
+		<!-- <task:scheduled ref="syncBlackListJob" method="execute" cron="* * 
+			*/1 * * ?" /> -->
+	</task:scheduled-tasks>
+</beans>

@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vrv.nj.mapper.MonitorModuleDataMapper">
+	<resultMap id="BaseResultMap" type="com.vrv.nj.domain.mysql.MonitorModuleData">
+		<result column="id" property="id" jdbcType="VARCHAR" />
+		<result column="moduleId" property="moduleId" jdbcType="VARCHAR" />
+		<result column="organizationCode" property="organizationCode"
+			jdbcType="VARCHAR" />
+		<result column="title" property="title" jdbcType="VARCHAR" />
+		<result column="content" property="content" jdbcType="VARCHAR" />
+		<result column="url" property="url" jdbcType="VARCHAR" />
+		<result column="poTime" property="poTime" jdbcType="BIGINT" />
+		<result column="author" property="author" jdbcType="VARCHAR" />
+		<result column="domain" property="domain" jdbcType="VARCHAR" />
+		<result column="source" property="source" jdbcType="VARCHAR" />
+		<result column="addTime" property="addTime" jdbcType="BIGINT" />
+		<result column="pr" property="pr" jdbcType="INTEGER" />
+		<result column="webSiteType" property="webSiteType" jdbcType="INTEGER" />
+		<result column="webSite" property="webSite" jdbcType="VARCHAR" />
+		<result column="positiveOrNegative" property="positiveOrNegative"
+			jdbcType="INTEGER" />
+		<result column="abroad" property="abroad" jdbcType="INTEGER" />
+		<result column="spreadValue" property="spreadValue" jdbcType="INTEGER" />
+		<result column="replay" property="replay" jdbcType="INTEGER" />
+		<result column="t_view" property="view" jdbcType="INTEGER" />
+		<result column="transer" property="transer" jdbcType="INTEGER" />
+		<result column="praiseCount" property="praiseCount" jdbcType="INTEGER" />
+		<result column="importanceDegree" property="importanceDegree"
+			jdbcType="INTEGER" />
+		<result column="opinionValue" property="opinionValue" jdbcType="INTEGER" />
+		<result column="sensitiveValue" property="sensitiveValue"
+			jdbcType="INTEGER" />
+		<result column="administrativeId" property="administrativeId"
+			jdbcType="VARCHAR" />
+		<result column="titlePrint" property="titlePrint" jdbcType="VARCHAR" />
+		<result column="titleContentPrint" property="titleContentPrint"
+			jdbcType="VARCHAR" />
+		<result column="subpoTime" property="subpoTime" jdbcType="BIGINT" />
+		<result column="subpraiseCount" property="subpraiseCount"
+			jdbcType="INTEGER" />
+		<result column="subreplay" property="subreplay" jdbcType="INTEGER" />
+		<result column="subtranser" property="subtranser" jdbcType="INTEGER" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,
+		moduleId,
+		organizationCode,
+		title,
+		content,
+		url,
+		poTime,
+		author,
+		domain,
+		source,
+		addTime,
+		pr,
+		webSiteType,
+		webSite,
+		positiveOrNegative,
+		abroad,
+		spreadValue,
+		replay,
+		t_view,
+		transer,
+		praiseCount,
+		importanceDegree,
+		opinionValue,
+		sensitiveValue,
+		administrativeId,
+		titlePrint,
+		titleContentPrint,
+		subpoTime,
+		subpraiseCount,
+		subreplay,
+		subtranser
+	</sql>
+
+	<!-- 根据主键查询 -->
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM
+		t_monitor_module_data
+		WHERE
+		id = #{id,jdbcType=VARCHAR}
+		AND moduleId
+		= #{moduleId,jdbcType=VARCHAR}
+	</select>
+
+	<!-- 单条数据入库 -->
+	<insert id="insertOne" parameterType="com.vrv.nj.domain.mysql.MonitorModuleData">
+		INSERT INTO
+		t_monitor_module_data
+		(id,moduleId,organizationCode,title,content,url,poTime,author,domain,source,addTime,pr,webSiteType,webSite,
+		positiveOrNegative,abroad,spreadValue,replay,t_view,transer,praiseCount,
+		importanceDegree,opinionValue,sensitiveValue,administrativeId,titlePrint,
+		titleContentPrint,subpoTime,subpraiseCount,subreplay,subtranser)
+		values
+		(
+		#{id,jdbcType=VARCHAR},
+		#{moduleId,jdbcType=VARCHAR},
+		#{organizationCode,jdbcType=VARCHAR},
+		#{title,jdbcType=CLOB},
+		#{content,jdbcType=CLOB},
+		#{url,jdbcType=VARCHAR},
+		#{poTime,jdbcType=BIGINT},
+		#{author,jdbcType=VARCHAR},
+		#{domain,jdbcType=VARCHAR},
+		#{source,jdbcType=VARCHAR},
+		#{addTime,jdbcType=BIGINT},
+		#{pr,jdbcType=INTEGER},
+		#{webSiteType,jdbcType=INTEGER},
+		#{webSite,jdbcType=VARCHAR},
+		#{positiveOrNegative,jdbcType=INTEGER},
+		#{abroad,jdbcType=INTEGER},
+		#{spreadValue,jdbcType=INTEGER},
+		#{replay,jdbcType=INTEGER},
+		#{view,jdbcType=INTEGER},
+		#{transer,jdbcType=INTEGER},
+		#{praiseCount,jdbcType=INTEGER},
+		#{importanceDegree,jdbcType=INTEGER},
+		#{opinionValue,jdbcType=INTEGER},
+		#{sensitiveValue,jdbcType=INTEGER},
+		#{administrativeId,jdbcType=VARCHAR},
+		#{titlePrint,jdbcType=VARCHAR},
+		#{titleContentPrint,jdbcType=VARCHAR},
+		#{subpoTime,jdbcType=BIGINT},
+		#{subpraiseCount,jdbcType=INTEGER},
+		#{subreplay,jdbcType=INTEGER},
+		#{subtranser,jdbcType=INTEGER}
+		)
+	</insert>
+
+	<!-- 根据模块id查询前10条数据 -->
+	<select id="selectByMap" resultMap="BaseResultMap" parameterType="java.util.Map">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM t_monitor_module_data
+		WHERE moduleId=#{moduleId,jdbcType=VARCHAR}
+		<if test="startPoTime != null">
+		<![CDATA[ AND poTime >= #{startPoTime,jdbcType=BIGINT}]]>
+		</if>
+		<if test="endPoTime != null">
+		<![CDATA[ AND poTime <= #{endPoTime,jdbcType=BIGINT}]]>
+		</if>
+		GROUP BY titleContentPrint
+		ORDER BY poTime DESC
+		LIMIT 10
+	</select>
+
+	<!-- 计算今天模块的数据总量 -->
+	<select id="count" resultType="java.lang.Long" parameterType="java.util.Map">
+		SELECT
+		COUNT(DISTINCT(titleContentPrint))
+		FROM
+		t_monitor_module_data
+		WHERE
+		moduleId=#{moduleId,jdbcType=VARCHAR}
+		<if test="startPoTime != null">
+		<![CDATA[ AND poTime >= #{startPoTime,jdbcType=BIGINT}]]>
+		</if>
+		<if test="endPoTime != null">
+		<![CDATA[ AND poTime <= #{endPoTime,jdbcType=BIGINT}]]>
+		</if>
+	</select>
+
+	<!-- 删除一天前的帖子 -->
+	<delete id="deleteBeforeTodayData" parameterType="java.lang.Long">
+		DELETE FROM
+		t_monitor_module_data
+		WHERE poTime &lt; #{poTime,jdbcType=BIGINT}
+	</delete>
+</mapper>

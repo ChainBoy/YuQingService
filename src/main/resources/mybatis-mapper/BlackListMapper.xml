@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vrv.nj.mapper.BlackListMapper">
+
+	<resultMap id="BaseResultMap" type="com.vrv.nj.domain.mysql.BlackList">
+		<result column="id" property="id" jdbcType="VARCHAR" />
+		<result column="active" property="active" jdbcType="INTEGER" />
+		<result column="addTime" property="addTime" jdbcType="VARCHAR" />
+		<result column="updateTime" property="updateTime" jdbcType="VARCHAR" />
+		<result column="organizationCode" property="organizationCode"
+			jdbcType="VARCHAR" />
+		<result column="mainDomain" property="mainDomain" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,
+		active,
+		addTime,
+		updateTime,
+		organizationCode,
+		mainDomain
+	</sql>
+
+	<insert id="saveOne" parameterType="com.vrv.nj.domain.mysql.BlackList">
+		INSERT INTO
+		t_black_list
+		(
+		id,
+		active,
+		addTime,
+		updateTime,
+		organizationCode,
+		mainDomain
+		)
+		VALUES
+		(
+		#{id,jdbcType=VARCHAR},
+		#{active,jdbcType=INTEGER},
+		#{addTime,jdbcType=VARCHAR},
+		#{updateTime,jdbcType=VARCHAR},
+		#{organizationCode,jdbcType=VARCHAR},
+		#{mainDomain,jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<select id="findByPK" parameterType="java.lang.String"
+		resultType="com.vrv.nj.domain.mysql.BlackList">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM
+		t_black_list
+		WHERE
+		id =#{id,jdbcType=VARCHAR}
+	</select>
+
+	<delete id="deleteByPK" parameterType="java.lang.String">
+		DELETE FROM
+		t_black_list
+		WHERE
+		id =#{id,jdbcType=VARCHAR}
+	</delete>
+
+	<update id="updateOne" parameterType="com.vrv.nj.domain.mysql.BlackList">
+		UPDATE
+		t_black_list
+		<set>
+			<trim suffixOverrides=",">
+				<if test="active != null">
+					active = #{active,jdbcType=INTEGER},
+				</if>
+				<if test="addTime != null and addTime != ''">
+					addTime = #{addTime,jdbcType=VARCHAR},
+				</if>
+				<if test="updateTime != null and updateTime != ''">
+					updateTime = #{updateTime,jdbcType=VARCHAR},
+				</if>
+				<if test="organizationCode !=null and organizationCode != ''">
+					organizationCode = #{organizationCode,jdbcType=VARCHAR},
+				</if>
+				<if test="mainDomain != null and mainDomain != ''">
+					mainDomain = #{mainDomain,jdbcType=VARCHAR},
+				</if>
+			</trim>
+		</set>
+		WHERE
+		id=#{id,,jdbcType=VARCHAR}
+	</update>
+</mapper>

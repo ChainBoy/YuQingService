@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vrv.nj.mapper.OrganizationSummaryMapper">
+	<resultMap id="BaseResultMap" type="com.vrv.nj.domain.mysql.OrganizationSummary">
+		<result column="organizationCode" property="organizationCode"
+			jdbcType="VARCHAR" />
+		<result column="record_time" property="record_time" jdbcType="DATE" />
+		<result column="abroad" property="abroad" jdbcType="BIGINT" />
+		<result column="boke" property="boke" jdbcType="BIGINT" />
+		<result column="forum" property="forum" jdbcType="BIGINT" />
+		<result column="media" property="media" jdbcType="BIGINT" />
+		<result column="news" property="news" jdbcType="BIGINT" />
+		<result column="tieba" property="tieba" jdbcType="BIGINT" />
+		<result column="twitter" property="twitter" jdbcType="BIGINT" />
+		<result column="weibo" property="weibo" jdbcType="BIGINT" />
+		<result column="weixin" property="weixin" jdbcType="BIGINT" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		organizationCode,
+		record_time,
+		abroad,
+		boke,
+		media,
+		forum,
+		news,
+		tieba,
+		twitter,
+		weixin,
+		weibo
+	</sql>
+
+	<!-- 增 -->
+	<insert id="insertOne" parameterType="com.vrv.nj.domain.mysql.OrganizationSummary">
+		INSERT INTO
+		t_organization_summary
+		(organizationCode,record_time,abroad,boke,media,forum,news,tieba,twitter,weixin,weibo)
+		values
+		(
+		#{organizationCode,jdbcType=VARCHAR},
+		#{record_time,jdbcType=DATE},
+		#{abroad,jdbcType=BIGINT},
+		#{boke,jdbcType=BIGINT},
+		#{media,jdbcType=BIGINT},
+		#{forum,jdbcType=BIGINT},
+		#{news,jdbcType=BIGINT},
+		#{tieba,jdbcType=BIGINT},
+		#{twitter,jdbcType=BIGINT},
+		#{weixin,jdbcType=BIGINT},
+		#{weibo,jdbcType=BIGINT}
+		)
+	</insert>
+
+	<!-- 增 -->
+	<insert id="insertSelective" parameterType="com.vrv.nj.domain.mysql.OrganizationSummary">
+		INSERT INTO t_organization_summary
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="organizationCode != null and organizationCode != ''">
+				organizationCode,
+			</if>
+			<if test="record_time != null">
+				record_time,
+			</if>
+			<if test="abroad != null">
+				abroad,
+			</if>
+			<if test="boke != null">
+				boke,
+			</if>
+			<if test="media != null">
+				media,
+			</if>
+			<if test="forum != null">
+				forum,
+			</if>
+			<if test="news != null">
+				news,
+			</if>
+			<if test="tieba != null">
+				tieba,
+			</if>
+			<if test="twitter != null">
+				twitter,
+			</if>
+			<if test="weixin != null">
+				weixin,
+			</if>
+			<if test="weibo != null">
+				weibo,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="organizationCode != null and organizationCode != ''">
+				#{organizationCode,jdbcType=VARCHAR},
+			</if>
+			<if test="record_time != null">
+				#{record_time,jdbcType=DATE},
+			</if>
+			<if test="abroad != null">
+				#{abroad,jdbcType=BIGINT},
+			</if>
+			<if test="boke != null">
+				#{boke,jdbcType=BIGINT},
+			</if>
+			<if test="media != null">
+				#{media,jdbcType=BIGINT},
+			</if>
+			<if test="forum != null">
+				#{forum,jdbcType=BIGINT},
+			</if>
+			<if test="news != null">
+				#{news,jdbcType=BIGINT},
+			</if>
+			<if test="tieba != null">
+				#{tieba,jdbcType=BIGINT},
+			</if>
+			<if test="twitter != null">
+				#{twitter,jdbcType=BIGINT},
+			</if>
+			<if test="weixin != null">
+				#{weixin,jdbcType=BIGINT},
+			</if>
+			<if test="weibo != null">
+				#{weibo,jdbcType=BIGINT},
+			</if>
+		</trim>
+	</insert>
+
+	<!-- 根据单位编码和日期查询 -->
+	<select id="selectByOrganizationCodeAndTime" resultType="com.vrv.nj.domain.mysql.OrganizationSummary">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM t_organization_summary
+		WHERE
+		1=1
+		<if test="organizationCode!=null and organizationCode != ''">
+			AND organizationCode =
+			#{organizationCode,jdbcType=VARCHAR}
+		</if>
+		<if test="record_time != null">
+			AND record_time = #{record_time,jdbcType=DATE}
+		</if>
+	</select>
+
+	<!-- 根据条件查询 -->
+	<select id="selectByCondition" resultType="com.vrv.nj.domain.mysql.OrganizationSummary"
+		parameterType="java.util.Map">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM t_organization_summary
+		WHERE
+		1=1
+		<if test="organizationCode!=null and organizationCode != ''">
+			AND organizationCode =
+			#{organizationCode,jdbcType=VARCHAR}
+		</if>
+		<if test="startDate != null">
+		<![CDATA[ AND  record_time >= #{startDate,jdbcType=DATE}]]>
+		</if>
+		<if test="endDate != null">
+		<![CDATA[ AND record_time <= #{endDate,jdbcType=DATE}]]>
+		</if>
+	</select>
+
+	<!-- 更新 -->
+	<update id="updateOne" parameterType="com.vrv.nj.domain.mysql.OrganizationSummary">
+		UPDATE t_organization_summary
+		<set>
+			<trim suffixOverrides=",">
+				<if test="abroad != null">
+					abroad = #{abroad,jdbcType=BIGINT},
+				</if>
+				<if test="boke != null">
+					boke = #{boke,jdbcType=BIGINT},
+				</if>
+				<if test="media != null">
+					media = #{media,jdbcType=BIGINT},
+				</if>
+				<if test="forum != null">
+					forum = #{forum,jdbcType=BIGINT},
+				</if>
+				<if test="news != null">
+					news = #{news,jdbcType=BIGINT},
+				</if>
+				<if test="tieba != null">
+					tieba = #{tieba,jdbcType=BIGINT},
+				</if>
+				<if test="twitter != null">
+					twitter = #{twitter,jdbcType=BIGINT},
+				</if>
+				<if test="weixin != null">
+					weixin = #{weixin,jdbcType=BIGINT},
+				</if>
+				<if test="weibo != null">
+					weibo = #{weibo,jdbcType=BIGINT},
+				</if>
+			</trim>
+		</set>
+		where 1=1
+		<if test="organizationCode!=null and organizationCode != ''">
+			AND organizationCode =
+			#{organizationCode,jdbcType=VARCHAR}
+		</if>
+		<if test="record_time != null">
+			AND record_time = #{record_time,jdbcType=DATE}
+		</if>
+	</update>
+</mapper>
